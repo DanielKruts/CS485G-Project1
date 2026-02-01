@@ -25,9 +25,9 @@ void hashCompute(int flowID, int& index1, int& index2, int& index3){
 bool cuckooInsert(vector<int>& hashTable, int flowID){
     int cur = flowID;
     vector<int> tempTable = hashTable;
-    
+    int lastIndex = -1;
     //Cuckoo Insertion Logic
-    for (int j = 0; j < NUM_STEPS; j++){
+    for (int j = 0; j <= NUM_STEPS; j++){
         int index1, index2, index3;
         hashCompute(cur, index1, index2, index3);
         
@@ -47,22 +47,22 @@ bool cuckooInsert(vector<int>& hashTable, int flowID){
         }
 
         //No more empty slots and we have exceeded the number of steps allowed, drop value, insertion failed
-        if(j == NUM_STEPS - 1){
-            cout << "Insertion failed for Flow ID: " << cur << endl;
+        if(j == NUM_STEPS){
             return false;
         }
 
         int evictIndex;
         //Evictions Logic
-        if(j % 3 == 0){
+        if(index1 != lastIndex){
             evictIndex = index1;
-        }else if(j % 3 == 1){
+        }else if(index2 != lastIndex){
             evictIndex = index2;
         }else{
             evictIndex = index3;
         }
         
-        swap(flowID, tempTable[evictIndex]);
+        swap(cur, tempTable[evictIndex]);
+        lastIndex = evictIndex;
     }
     return false;
 }
@@ -84,9 +84,9 @@ int main(){
         flowCount++;
     }
 
-    cout << "Total Flows Inserted: " << flowCount << " out of " << NUM_FLOWS << endl;
     for (int i = 0; i < TABLE_SIZE; i++){
             cout << "Index: " << i << " Flow ID: " << hashTable[i] << endl;
     }
+    cout << "Total Flows Inserted: " << flowCount << " out of " << NUM_FLOWS << endl;
     return 0;
 }
