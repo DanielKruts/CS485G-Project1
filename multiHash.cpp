@@ -1,7 +1,5 @@
 #include <iostream>
 #include <vector>
-#include <random>
-#include <algorithm>
 #include "hashes.h"
 
 using namespace std;
@@ -16,20 +14,8 @@ int main(){
     vector<int> hashTable(TABLE_SIZE, 0);
     //Create all the flowID's for hashing
     vector<int> flows;
-    for (int i = 1; i <= NUM_FLOWS; i++){
-            flows.push_back(i);
-    }
-    // Shuffles the flow IDs for randomization
-    // The shuffle function used was an example I found online that is an implementation of the Fisher-Yates shuffle
-    // This uses a random number generated to be the seed and different seeds create different shuffles
-    // If the seed happens to somehow be the same number, the shuffle will always be the same, but I used this for a simple pseudo-random function
-    random_device rd;
-    mt19937 g(rd());
-    //Important note, although the random seeds are supposed to be different, on Windows MinGW system, 
-    //the randomness seems to be deterministic
-    shuffle(flows.begin(), flows.end(), g);
-
-
+    int flowCount = 0;
+    createFlowIDs(flows, NUM_FLOWS);
     for(int i = 0; i < NUM_FLOWS; i++){
         int flowID = flows[i];
         // Apply multiple hash functions
@@ -54,13 +40,12 @@ int main(){
             cout << "Collision occurred for Flow ID: " << flowID << endl;
             continue;
         }
+        flowCount++;
     }
     
-
+    cout << "Total Flows Inserted: " << flowCount << " out of " << NUM_FLOWS << endl;
     for (int i = 0; i < TABLE_SIZE; i++){
-        if (hashTable[i] != 0){
             cout << "Index: " << i << " Flow ID: " << hashTable[i] << endl;
-        }
     }
 
     return 0;   
