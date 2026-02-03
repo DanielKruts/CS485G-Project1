@@ -20,4 +20,7 @@ int32_t intHash(int32_t key);
 // Create flow IDs
 void createFlowIDs(vector<int>& flows, int numFlows);
 
+//Compute 3 hashes for a given value and retuns their possible index locations in the hash table
+void hashCompute(int value, int& index1, int& index2, int& index3);
+
 #endif

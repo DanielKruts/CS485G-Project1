@@ -10,18 +10,6 @@ const int NUM_FLOWS = 1000;
 const int NUM_HASHES = 3;
 const int NUM_STEPS = 2;
 
-void hashCompute(int flowID, int& index1, int& index2, int& index3){
-    // Apply the two hash functions and then the third combined hash
-    uint32_t hash1 = static_cast<uint32_t>(FNVHash1(flowID));
-    uint32_t hash2 = static_cast<uint32_t>(intHash(flowID));
-    uint32_t hash3 = hash1 ^ (hash2 << 1);
-
-    //Creates the possible index numbers where the flowID can be inserted
-    index1 = hash1 % TABLE_SIZE;
-    index2 = hash2 % TABLE_SIZE;
-    index3 = hash3 % TABLE_SIZE;
-}
-
 bool cuckooInsert(vector<int>& hashTable, int flowID){
     int cur = flowID;
     vector<int> tempTable = hashTable;

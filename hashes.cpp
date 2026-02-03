@@ -4,6 +4,8 @@
 #include <vector>
 #include <algorithm>
 
+const int TABLE_SIZE = 1000;
+
 using namespace std;
 // Section of hash functions that were given and converted into a format friendly for c++
 /* FNV Hash for string */
@@ -23,7 +25,6 @@ int32_t FNVHash1(const string& data) {
 
     return hash;
 }
-
 /* FNV Hash for long key */
 int32_t FNVHash1(int64_t key) {
     key = (~key) + (key << 18);
@@ -35,12 +36,10 @@ int32_t FNVHash1(int64_t key) {
 
     return static_cast<int32_t>(key);
 }
-
 /* FNV Hash for two long keys */
 int32_t FNVHash1(int64_t key1, int64_t key2) {
     return FNVHash1((key1 << 32) | key2);
 }
-
 /* Thomas Wang integer hash */
 int32_t intHash(int32_t key) {
     key += ~(key << 15);
@@ -51,18 +50,30 @@ int32_t intHash(int32_t key) {
     key ^= (key >> 16);
     return key;
 }
-
 void createFlowIDs(vector<int>& flows, int numFlows){
     for (int i = 1; i <= numFlows; i++){
             flows.push_back(i);
     }
-    // Shuffles the flow IDs for randomization
-    // The shuffle function used was an example I found online that is an implementation of the Fisher-Yates shuffle
-    // This uses a random number generated to be the seed and different seeds create different shuffles
-    // If the seed happens to somehow be the same number, the shuffle will always be the same, but I used this for a simple pseudo-random function
+    /* Shuffles the flow IDs for randomization
+     The shuffle function used was an example I found online that is an implementation of the Fisher-Yates shuffle
+     This uses a random number generated to be the seed and different seeds create different shuffles
+     This creates randomness in what flow IDs are inserted first into the hash table, allowing for the simulation to
+     show that not every flow ID can be inserted due to collisions even if the hashes and the number of flows stay the same in each
+     iteration of the program.
+    */
     random_device rd;
     mt19937 g(rd());
-    //Important note, although the random seeds are supposed to be different, on Windows MinGW system, 
-    //I found the randomness is not as random as it should be. This is still fine for the scope of the project.
     shuffle(flows.begin(), flows.end(), g);
+}
+//The function to compute all three hashes for a given flowID
+void hashCompute(int flowID, int& index1, int& index2, int& index3){
+    // Apply the two hash functions and then the third combined hash
+    uint32_t hash1 = static_cast<uint32_t>(FNVHash1(flowID));
+    uint32_t hash2 = static_cast<uint32_t>(intHash(flowID));
+    uint32_t hash3 = hash1 ^ (hash2 << 1);
+
+    //Creates the possible index numbers where the flowID can be inserted
+    index1 = hash1 % TABLE_SIZE;
+    index2 = hash2 % TABLE_SIZE;
+    index3 = hash3 % TABLE_SIZE;
 }
