@@ -23,4 +23,7 @@ void createFlowIDs(vector<int>& flows, int numFlows);
 //Compute 3 hashes for a given value and retuns their possible index locations in the hash table
 void hashCompute(int value, int& index1, int& index2, int& index3);
 
+//Function to print out the hashTable and the number of flows successfully inserted into the table
+void printTable(vector<int> hashTable, int flowCount);
+
 #endif

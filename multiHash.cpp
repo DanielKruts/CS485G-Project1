@@ -34,9 +34,6 @@ int main(){
         }
         flowCount++;
     }
-    for (int i = 0; i < TABLE_SIZE; i++){
-            cout << "Index: " << i << " Flow ID: " << hashTable[i] << endl;
-    }
-    cout << "Total Flows Inserted: " << flowCount << " out of " << NUM_FLOWS << endl;
+    printTable(hashTable, flowCount);
     return 0;   
 }

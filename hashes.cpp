@@ -2,13 +2,17 @@
 #include <string>
 #include <random>
 #include <vector>
+#include <iostream>
 #include <algorithm>
 
 const int TABLE_SIZE = 1000;
+const int NUM_FLOWS = 1000;
 
 using namespace std;
 // Section of hash functions that were given and converted into a format friendly for c++
 /* FNV Hash for string */
+/* Many changes were made to make the hash functions work when converting from Java to c++, there are is a lot more requirements in c++
+   that required many forced casting of data types on the functions and data input.*/
 int32_t FNVHash1(const string& data) {
     const int32_t p = 16777619;
     int32_t hash = static_cast<int32_t>(2166136261UL);
@@ -76,4 +80,11 @@ void hashCompute(int flowID, int& index1, int& index2, int& index3){
     index1 = hash1 % TABLE_SIZE;
     index2 = hash2 % TABLE_SIZE;
     index3 = hash3 % TABLE_SIZE;
+}
+//Function to print out the hashTable and the number of flows successfully inserted into the table
+void printTable(vector<int> hashTable, int flowCount){
+    for (int i = 0; i < TABLE_SIZE; i++){
+            cout << "Index: " << i << " Flow ID: " << hashTable[i] << endl;
+    }
+    cout << "Total Flows Inserted: " << flowCount << " out of " << NUM_FLOWS << endl;
 }
