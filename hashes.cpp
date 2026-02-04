@@ -54,6 +54,8 @@ int32_t intHash(int32_t key) {
     key ^= (key >> 16);
     return key;
 }
+
+//Creates all of the flow IDs from 1-1000 and shuffles them into a pseudo-random order
 void createFlowIDs(vector<int>& flows, int numFlows){
     for (int i = 1; i <= numFlows; i++){
             flows.push_back(i);

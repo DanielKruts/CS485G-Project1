@@ -13,8 +13,9 @@ using namespace std;
 bool insertFlow(int flowID, vector<int>& hashTable){
     uint32_t index;
     int local;
+
     for (int i = 0; i < NUM_HASHES; i++){
-        //Which hash is used at which value i, or on paper, would be d(Number of partitions in the hash table)
+        //Which hash is used at which value i, or on paper, would be d(Number of partitions in the hash table)        
         switch(i){
             case 0:
                 local = static_cast<uint32_t>(FNVHash1(flowID)) % PARTITION_SIZE;
