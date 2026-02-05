@@ -1,5 +1,6 @@
 #include <iostream>
 #include <vector>
+#include <fstream>
 #include "hashes.h"
 
 using namespace std;
@@ -35,5 +36,14 @@ int main(){
         flowCount++;
     }
     printTable(hashTable, flowCount);
+
+    //Create output
+    ofstream outputFile;
+    outputFile.open("multiHash.txt");
+    outputFile << "Total Flows Inserted: " << flowCount << " out of " << NUM_FLOWS << endl;
+    for (int i = 0; i < TABLE_SIZE; i++){
+        outputFile << "Index: " << i << " Flow ID: " << hashTable[i] << endl;
+    }
+    outputFile.close();
     return 0;   
 }

@@ -1,5 +1,6 @@
 #include <iostream>
 #include <vector>
+#include <fstream>
 #include "hashes.h"
 
 // Global Variables
@@ -56,5 +57,14 @@ int main(){
         }
     }
     printTable(hashTable, flowCount);
+
+    //Create output
+    ofstream outputFile;
+    outputFile.open("dLeft.txt");
+    outputFile << "Total Flows Inserted: " << flowCount << " out of " << NUM_FLOWS << endl;
+    for (int i = 0; i < TABLE_SIZE; i++){
+        outputFile << "Index: " << i << " Flow ID: " << hashTable[i] << endl;
+    }
+    outputFile.close();
     return 0;
 }
