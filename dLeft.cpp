@@ -31,13 +31,16 @@ bool insertFlow(int flowID, vector<int>& hashTable){
                 break;
         }
 
+        //From whichever case occured, the original index created is put into this formula to derive which partition it is in and it's index in that partition
         index = i * PARTITION_SIZE + local;
 
+        //If that index is not already taken up, insert it into that index
         if(hashTable[index] == 0){
             hashTable[index] = flowID;
             return true;
         }
     }
+    //All indices failed, drop the value
     cout << "flowID: " << flowID << " dropped, failure to insert." << endl;
     return false;
 }
